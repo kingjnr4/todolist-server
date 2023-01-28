@@ -1,10 +1,12 @@
 import cors from 'cors';
 import express, { Application, Request } from "express";
-import { PORT } from './config';
-import { IRoute } from './interfaces/route.interface';
+import { PORT, CORS_CREDENTIALS, CORS_ORIGIN } from './config';
 import errorMiddleware from './middlewares/error.middleware';
 import morganMiddleware from './middlewares/morgan.middleware';
 import { logger } from './utils/logger';
+import {IRoute} from './interfaces/route.interface'
+
+
 
 export default class App {
 
@@ -27,7 +29,10 @@ export default class App {
 
     private initializeMiddlewares(): void {
         this.app.use(express.json());
-        this.app.use(cors<Request>());
+        this.app.use(cors<Request>({
+            credentials:CORS_CREDENTIALS,
+            origin:CORS_ORIGIN,
+        }));
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(morganMiddleware)
     }

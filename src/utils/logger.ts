@@ -1,13 +1,11 @@
+
 import { existsSync, mkdirSync } from "fs";
-import path, { join } from "path";
+import  { join } from "path";
 import winston from "winston";
-import { DB_URL, LOG_DIR } from "../../config";
-import { fileURLToPath } from 'url';
+import { LOG_DIR } from "../config";
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
-// console.log(__dirname)
+
 
 const dir: string = join(__dirname, LOG_DIR!);
 
