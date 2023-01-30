@@ -4,7 +4,7 @@ import {  AnyZodObject } from "zod";
 import HttpException from "../utils/exception";
 import { logger } from "../utils/logger";
 
-const validtaionMiddleware = (schema: AnyZodObject): RequestHandler => {
+const validationMiddleware = (schema: AnyZodObject): RequestHandler => {
   return async (req, res, next) => {
     const parseResult = await schema.spa({
       body: req.body,
@@ -12,8 +12,8 @@ const validtaionMiddleware = (schema: AnyZodObject): RequestHandler => {
       params: req.params,
     });
     if (!parseResult.success) {
-      logger.error(parseResult.error);
-      next(new HttpException(400, parseResult.error.message));
+      logger.error(parseResult.error.flatten());
+      next(new HttpException(400,JSON.stringify( parseResult.error.issues)));
       return;
     }
 
@@ -22,4 +22,4 @@ const validtaionMiddleware = (schema: AnyZodObject): RequestHandler => {
   };
 };
 
-export default validtaionMiddleware;
+export default validationMiddleware;
