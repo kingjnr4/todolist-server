@@ -1,7 +1,7 @@
 {
   "ts-node": {  "files": true },
   "compilerOptions": {
-    "target": "es2016",
+    "target": "ES5",
     "module": "CommonJS",
     "esModuleInterop": true,
     "typeRoots": ["./src/types"],

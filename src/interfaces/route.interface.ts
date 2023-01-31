@@ -1,6 +1,7 @@
 import { Router } from "express";
 
-export interface IRoute {
+export interface AppRoutes {
     path?: string,
-    router: Router
+    router: Router,
+    initializeRoutes:()=>void
 }
