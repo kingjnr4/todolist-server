@@ -1,5 +1,9 @@
+import { readFileSync } from "fs";
+import Handlebars from "handlebars";
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import path from "path";
+import { cwd } from "process";
 
 class Mailer {
   private static instance: Mailer;
@@ -23,12 +27,36 @@ class Mailer {
   public sendMailWithTemplate = async (
     to: string,
     subject: string,
+    templateName:string,
     data: any
   ) => {
-    const html = "";
-
+    const source = readFileSync(
+      path.join(cwd(),'src','templates',`${templateName}.hbs`),
+      'utf8',
+    );
+    const template = Handlebars.compile(source)
     const mailOptions = {
-      from: '"Sender Name" <sender@example.com>',
+      from: '"John Doe" <admin@taskmaster.com>',
+      to,
+      subject,
+      html:template(data),
+    };
+
+    try {
+      const info = await this.transporter.sendMail(mailOptions);
+      console.log(`Message sent: ${info.messageId}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  public sendMailWithoutTemplate = async (
+    to: string,
+    subject: string,
+    html:string,
+  ) => {
+  
+    const mailOptions = {
+      from: '"John Doe" <admin@taskmaster.com>',
       to,
       subject,
       html,

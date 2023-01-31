@@ -5,7 +5,7 @@ import HttpException from "../utils/exception";
 import { logger } from "../utils/logger";
 
 const validationMiddleware = (schema: AnyZodObject): RequestHandler => {
-  return async (req, res, next) => {
+  return async (req, res, next) => {    
     const parseResult = await schema.spa({
       body: req.body,
       query: req.query,
@@ -18,7 +18,6 @@ const validationMiddleware = (schema: AnyZodObject): RequestHandler => {
     }
 
     next();
-    return;
   };
 };
 

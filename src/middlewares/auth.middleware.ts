@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { verifyJwt } from '../utils/helper';
 import { UserService } from '../services/users/users.service';
 export const authMiddleware:RequestHandler =async (req, res, next) => {
-    const token = req.headers.authorization ;
+    const token = req.headers.authorization?.split('Bearer ')[1]
     const userService = new UserService()
   
     if (!token) {

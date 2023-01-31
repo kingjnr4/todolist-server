@@ -1,8 +1,9 @@
 
-import { existsSync, mkdirSync } from "fs";
-import  { join } from "path";
+import { existsSync, mkdirSync, readFileSync } from "fs";
+import  path, { join } from "path";
 import winston from "winston";
 import { LOG_DIR } from "../config";
+import { cwd } from "process";
 
 
 
@@ -14,6 +15,7 @@ if (!existsSync(dir)) {
 }
 // Define your severity levels.
 // With them, You can create log files,
+
 // see or hide levels based on the running ENV.
 const levels = {
     error: 0,
@@ -62,10 +64,12 @@ const format = winston.format.combine(
 const custformat = winston.format.combine(
     // Add the message timestamp with the preferred format
     winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
-    // Tell Winston that the logs must be colored
-    // Define the format of the message showing the timestamp, the level and the message
+  
+  /* Formatting the log message as a JSON object. */
+    winston.format.json({space:4}),
+      // Define the format of the message showing the timestamp, the level and the message
     winston.format.printf(
-        (info) => `${info.timestamp} [${info.level}]: ${info.message}`
+        (info) => `${info.timestamp} [${info.level}]: ${info.message}\n`
     )
 );
 
