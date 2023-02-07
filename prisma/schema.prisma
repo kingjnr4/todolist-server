@@ -11,28 +11,62 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  username   String?  @unique
-  email      String   @unique
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  username   String?    @unique
+  email      String     @unique
   password   String
-  verified   Boolean  @default(false)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  otps        Otp[]
+  verified   Boolean    @default(false)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  otps       Otp[]
+  categories Category[]
+  Task       Task[]
 }
 
 model Otp {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  token    String
-  user_id  String  @db.ObjectId
-  user     User    @relation(fields: [user_id], references: [id])
-  type OtpType
-  created_at DateTime  @default(now())
-  expiry   DateTime
-  used     Boolean    @default(false)
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  token      String
+  user_id    String   @db.ObjectId
+  user       User     @relation(fields: [user_id], references: [id])
+  type       OtpType
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  expiry     DateTime
+  used       Boolean  @default(false)
+}
+
+model Category {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  user_id    String   @db.ObjectId
+  user       User     @relation(references: [id], fields: [user_id])
+  updated_at DateTime @updatedAt
+  Task       Task[]
+}
+
+model Task {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  category_id String?  @db.ObjectId
+  category    Category? @relation(references: [id], fields: [category_id])
+  description String
+  body        String
+  user_id     String   @db.ObjectId
+  user        User     @relation(references: [id], fields: [user_id])
+  start_time  DateTime
+  end_time    DateTime
+  status      Status
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
 
 enum OtpType {
   register
   reset
+}
+
+enum Status {
+  paused
+  started
+  inProgress
+  complete
 }

@@ -4,6 +4,8 @@ import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import path from "path";
 import { cwd } from "process";
+import HttpException from "./exception";
+import { logger } from "./logger";
 
 class Mailer {
   private static instance: Mailer;
@@ -36,7 +38,7 @@ class Mailer {
     );
     const template = Handlebars.compile(source)
     const mailOptions = {
-      from: '"John Doe" <admin@taskmaster.com>',
+      from: '"Taskmaster" <admin@taskmaster.com>',
       to,
       subject,
       html:template(data),
@@ -45,8 +47,8 @@ class Mailer {
     try {
       const info = await this.transporter.sendMail(mailOptions);
       console.log(`Message sent: ${info.messageId}`);
-    } catch (error) {
-      console.error(error);
+    } catch (error:any) {
+      logger.info(error)
     }
   };
   public sendMailWithoutTemplate = async (
@@ -56,7 +58,7 @@ class Mailer {
   ) => {
   
     const mailOptions = {
-      from: '"John Doe" <admin@taskmaster.com>',
+      from: '"Taskmaster" <admin@taskmaster.com>',
       to,
       subject,
       html,
@@ -65,8 +67,8 @@ class Mailer {
     try {
       const info = await this.transporter.sendMail(mailOptions);
       console.log(`Message sent: ${info.messageId}`);
-    } catch (error) {
-      console.error(error);
+    } catch (error:any) {
+   console.log(error)
     }
   };
 }

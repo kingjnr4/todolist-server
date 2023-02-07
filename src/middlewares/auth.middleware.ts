@@ -10,10 +10,11 @@ export const authMiddleware:RequestHandler =async (req, res, next) => {
     }
     const payload =  verifyJwt(token)
     if (!payload) {
-      return res.status(400).send("Invalid Token.");
+      return res.status(400).json({message:"Invalid Token."});
 
     }
     const user = await userService.findOne(payload.id)
+
     req.authUser = user
     next();
   }

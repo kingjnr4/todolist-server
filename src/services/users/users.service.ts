@@ -6,7 +6,7 @@ import HttpException from "../../utils/exception";
 import status from "http-status";
 
 export class UserService {
-  private readonly prisma = db.getClient();
+  private  prisma = db.getClient();
 
   async create(dto: createUserDto) {
     const user = await this.prisma.user.create({
@@ -25,6 +25,17 @@ export class UserService {
         ...dto.body,
       },
     });
+    return user;
+  }
+
+  async updateFields(id:string,data:any){
+    await this.findOne(id)
+    const user = await this.prisma.user.update({
+      where:{
+        id
+      },
+      data
+    })
     return user;
   }
 
@@ -48,6 +59,8 @@ export class UserService {
         email,
       },
     });
+    console.log(user);
+    
     if (!user) {
       throw new HttpException(status.NOT_FOUND, "Record not found");
     }

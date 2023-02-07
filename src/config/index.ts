@@ -19,7 +19,7 @@ const envSchema = {
   EMAIL_PORT: port().default(2525),
   EMAIL_USER: z.string(),
   EMAIL_PASSWORD: z.string().min(1),
-  EMAIL_SECURE: z.boolean().default(false),
+  EMAIL_SECURE: z.boolean(),
 };
 
 export const {

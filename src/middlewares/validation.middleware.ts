@@ -13,10 +13,9 @@ const validationMiddleware = (schema: AnyZodObject): RequestHandler => {
     });
     if (!parseResult.success) {
       logger.error(parseResult.error.flatten());
-      next(new HttpException(400,JSON.stringify( parseResult.error.issues)));
+      next(new HttpException(400, parseResult.error.issues as any));
       return;
     }
-
     next();
   };
 };

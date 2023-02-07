@@ -1,5 +1,6 @@
 import z, { TypeOf } from "zod";
 import db from "../../db";
+import { logger } from "../../utils/logger";
 
 export const createUserSchema = z.object({
   body: z.object({
@@ -16,7 +17,7 @@ export const createUserSchema = z.object({
             email,
           },
         });
-        return !Boolean(user);
+        return Boolean(!user);
       }, "User already exists"),
     password: z.string({ required_error: "password is required" }).min(6),
     username: z

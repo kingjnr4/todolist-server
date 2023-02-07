@@ -75,12 +75,11 @@ export default class App {
  */
   private initDatabase() {
     db.connect();
-    process.on("exit", () => {
-      db.disconnect()
-    });
   }
 
   private initializeEmail(){
+    console.log(EMAIL_SECURE);
+    
     Mailer.getInstance({
       host:EMAIL_HOST,
       port:EMAIL_PORT,
@@ -88,6 +87,9 @@ export default class App {
       auth:{
         user:EMAIL_USER,
         pass:EMAIL_PASSWORD      
+      },
+      tls:{
+        rejectUnauthorized:false
       }
     })
   }

@@ -20,7 +20,7 @@ const errorMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  try {
+
     const status: number = error.status || 500;
     const message: string = error.message || "Something went wrong";
 
@@ -28,9 +28,7 @@ const errorMiddleware = (
       `[${req.method}] ${req.path}  >> StatusCode:: ${status}, Message:: ${message}`
     );
     res.status(status).json({ message });
-  } catch (error) {
-    next(error);
-  }
+  
 };
 
 export default errorMiddleware;

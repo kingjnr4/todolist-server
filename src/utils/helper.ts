@@ -15,7 +15,7 @@ export function toCamelCase(str:string) {
 }
   
 export async function hashPassword(password: string): Promise<string> {
-  const hashedPassword = await bcrypt.hash(password,SECRET_KEY);
+  const hashedPassword = await bcrypt.hash(password,10);
   return hashedPassword;
 }
 
@@ -26,9 +26,13 @@ export async function comparePassword(password: string, hashedPassword: string):
 
 
 export  function signJwt(payload: string | object | Buffer) {
-  return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: JWT_EXPIRES_IN
-  });
+  try {
+    return jwt.sign(payload, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES_IN
+    });
+  } catch (e) {
+    throw new Error('Internal Server Error')
+  }
 }
 
 
